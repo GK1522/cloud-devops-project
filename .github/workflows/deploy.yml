@@ -21,8 +21,9 @@ jobs:
         key: ${{ secrets.EC2_SSH_KEY }}
         script: |
           cd /home/ubuntu/cloud-devops-project
-          git pull origin master
+          git fetch origin
+          git reset --hard origin/master
           sudo docker stop flask-app || true
           sudo docker rm flask-app || true
-          sudo docker build -t myapp .
+          sudo docker build --no-cache -t myapp .
           sudo docker run -d -p 80:5000 --name flask-app myapp
